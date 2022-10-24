@@ -19,7 +19,7 @@ public class KvittConfiguration : IEntityTypeConfiguration<Kvitt>
             Worms = 12323,
         });
         
-        builder.HasData(new Kvitt("Also, I'm buying Manchested United ur welcome", 1)
+        builder.HasData(new Kvitt("Also, I'm buying Manchester United ur welcome", 1)
         {
             Id = 2,
             Worms = 6436456,
