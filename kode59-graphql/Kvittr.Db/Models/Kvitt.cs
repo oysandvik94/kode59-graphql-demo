@@ -17,9 +17,4 @@ public class Kvitt
     }
 
     protected Kvitt() { }
-
-    public int GiveWork()
-    {
-        return ++Worms;
-    }
 }
