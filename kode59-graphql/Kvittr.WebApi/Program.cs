@@ -1,12 +1,8 @@
-using System.Reflection;
 using Keycloak.AuthServices.Authentication;
 using Kvittr.Model;
 using Kvittr.Model.GraphQL;
-using Kvittr.Model.GraphQL.KvittQueries;
-using Kvittr.Model.Models;
-using Kvittr.WebApi.ViewModels;
+using Kvittr.WebApi;
 using Mapster;
-using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -36,11 +32,15 @@ config.Default.MaxDepth(4);
 
 builder.Services
     .AddGraphQLServer()
+    .AddAuthorization()
     .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
+    .AddMutationConventions()
     .AddWebApiTypes()
     .AddProjections()
     .AddSorting()
     .AddFiltering()
+    .AddHttpRequestInterceptor<RequestInterceptor>()
     .RegisterDbContext<KvittrDbContext>(DbContextKind.Pooled)
     ;
 
@@ -53,6 +53,10 @@ var db = await dbContextFactory.CreateDbContextAsync();
 await db.Database.MigrateAsync();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapGraphQL();

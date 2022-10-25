@@ -1,3 +1,4 @@
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data.Filters.Expressions;
 using HotChocolate.Data.Projections.Expressions;
 using HotChocolate.Resolvers;
@@ -12,7 +13,7 @@ namespace Kvittr.Model.GraphQL;
 public class Query
 {
     [GraphQLDescription("Get all Kvitts, use minWorms to filter for likes")]
-    [UseOffsetPaging(IncludeTotalCount = true, MaxPageSize = 5), UseProjection, UseFiltering, UseSorting]
+    [UseOffsetPaging(IncludeTotalCount = true, MaxPageSize = 15), UseProjection, UseFiltering, UseSorting]
     public async Task<List<KvittDto>> GetKvitts(
         int? minWorms,
         IResolverContext resolverContext,

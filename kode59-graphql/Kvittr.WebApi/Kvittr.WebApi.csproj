@@ -10,6 +10,7 @@
       <PackageReference Include="HotChocolate" Version="12.15.0" />
       <PackageReference Include="HotChocolate.Analyzers" Version="12.15.0" />
       <PackageReference Include="HotChocolate.AspNetCore" Version="12.15.0" />
+      <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="12.15.0" />
       <PackageReference Include="HotChocolate.Data" Version="12.15.0" />
       <PackageReference Include="HotChocolate.Data.EntityFramework" Version="12.15.0" />
       <PackageReference Include="HotChocolate.Types.Analyzers" Version="12.15.0" />

@@ -1,4 +1,7 @@
+using HotChocolate.AspNetCore.Authorization;
+
 namespace Kvittr.WebApi.ViewModels;
+
 
 public record AuthorDto
 {
