@@ -8,8 +8,7 @@ public class Author
     public string LastName { get; set; } = default!;
     public DateTime BirthDate { get; set; } = default!;
 
-    private readonly List<Kvitt> _kvitts = new();
-    public IReadOnlyCollection<Kvitt> Kvitts => _kvitts;
+    public virtual ICollection<Kvitt> Kvitts  { get; set; }
 
     public Author(string userName, string firstName, string lastName, DateTime birthDate)
     {

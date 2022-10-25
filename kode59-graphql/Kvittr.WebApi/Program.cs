@@ -1,6 +1,12 @@
+using System.Reflection;
 using Keycloak.AuthServices.Authentication;
 using Kvittr.Model;
 using Kvittr.Model.GraphQL;
+using Kvittr.Model.GraphQL.KvittQueries;
+using Kvittr.Model.Models;
+using Kvittr.WebApi.ViewModels;
+using Mapster;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,20 +24,29 @@ builder.Services.AddKeycloakAuthentication(builder.Configuration, options =>
 });
 
 // Add DB
-builder.Services.AddDbContext<KvittrDbContext>(options =>
+builder.Services.AddPooledDbContextFactory<KvittrDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var config = TypeAdapterConfig.GlobalSettings;
+config.Default.MaxDepth(4);
+            
 
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .RegisterDbContext<KvittrDbContext>()
+    .AddWebApiTypes()
+    .AddProjections()
+    .AddSorting()
+    .AddFiltering()
+    .RegisterDbContext<KvittrDbContext>(DbContextKind.Pooled)
     ;
 
 var app = builder.Build();
 
 // Migrate on boot
 await using var scope = app.Services.CreateAsyncScope();
-await using var db = scope.ServiceProvider.GetService<KvittrDbContext>();
+var dbContextFactory = scope.ServiceProvider.GetService<IDbContextFactory<KvittrDbContext>>();
+var db = await dbContextFactory.CreateDbContextAsync();
 await db.Database.MigrateAsync();
 
 app.UseRouting();
