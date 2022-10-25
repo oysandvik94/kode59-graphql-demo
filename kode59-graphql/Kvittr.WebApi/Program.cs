@@ -15,13 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add configuration
 builder.Services.AddKeycloakAuthentication(builder.Configuration, options =>
 {
-    options.Authority = builder.Configuration["Configuration:Keycloak:authority"];
+    options.Authority = builder.Configuration["Keycloak:authority"];
+    options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new 
         TokenValidationParameters()
         {
             ValidateAudience = false
         };
 });
+
+builder.Services.AddAuthorization();
 
 // Add DB
 builder.Services.AddPooledDbContextFactory<KvittrDbContext>(options =>
